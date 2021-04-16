@@ -51,7 +51,7 @@ namespace MyTranslatorApp
                 // Start GUI
                 InitializeComponent();
                 // Get languages for drop-downs
-                //GetLanguagesForTranslate();
+                GetLanguagesForTranslate();
                 // Populate drop-downs with values from GetLanguagesForTranslate
                 PopulateLanguageMenus();
             }
@@ -81,16 +81,19 @@ namespace MyTranslatorApp
         //Populate list of items in to combo boxes
         private void PopulateLanguageMenus()
         {
-            //int count = languageCodesAndTitles.Count;
-            //foreach (string menuItem in languageCodesAndTitles.Keys)
-            //{
-                FromLanguageComboBox.Items.Add("English");
-                ToLanguageComboBox.Items.Add("French");
-            //}
+            // Add option to automatically detect the source language
+            FromLanguageComboBox.Items.Add("Detect");
+
+            int count = languageCodesAndTitles.Count;
+            foreach (string menuItem in languageCodesAndTitles.Keys)
+            {
+                FromLanguageComboBox.Items.Add(menuItem);
+                ToLanguageComboBox.Items.Add(menuItem);
+            }
 
             // Set default languages
-            FromLanguageComboBox.SelectedItem = "English";
-            ToLanguageComboBox.SelectedItem = "French";
+            FromLanguageComboBox.SelectedItem = "Detect";
+            ToLanguageComboBox.SelectedItem = "English";
         }
         //TRANSLATION OF INPUT TEXT ON BUTTON CLICK
         private async void TranslateButton_Click(object sender, EventArgs e)
@@ -98,9 +101,9 @@ namespace MyTranslatorApp
             string textToTranslate = TextToTranslate.Text.Trim();
 
             string fromLanguage = FromLanguageComboBox.SelectedValue.ToString();
-            string fromLanguageCode = "en";// languageCodesAndTitles[fromLanguage];
+            string fromLanguageCode = languageCodesAndTitles[fromLanguage];
 
-            string toLanguageCode = "fr";// languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
+            string toLanguageCode = languageCodesAndTitles[ToLanguageComboBox.SelectedValue.ToString()];
 
             // handle null operations: no text or same source/target languages
             if (textToTranslate == "" || fromLanguageCode == toLanguageCode)
